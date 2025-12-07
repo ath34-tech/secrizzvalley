@@ -1,0 +1,11 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.auth-submit {
+  margin-top: 8px;
+  width: 100%;
+}

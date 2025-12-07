@@ -1,0 +1,89 @@
+/* GAME SCREEN ROOT */
+.game-root {
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #0a1a2a 0%, #000000 70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* GLOW FRAME */
+.game-wrapper {
+  width: 85vw;
+  height: 85vh;
+  border: 3px solid rgba(100, 180, 255, 0.3);
+  border-radius: 14px;
+  padding: 6px;
+  background: rgba(10, 20, 35, 0.8);
+  box-shadow: 
+      0 0 50px rgba(100, 180, 255, 0.12),
+      0 14px 35px rgba(0, 0, 0, 0.65),
+      inset 0 0 28px rgba(100, 180, 255, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* PHASER CANVAS CONTAINER */
+#phaser-game-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+}
+
+/* Subtle animated glow */
+.game-wrapper:before {
+  content: "";
+  position: absolute;
+  width: 90%;
+  height: 140%;
+  top: -20%;
+  left: -20%;
+  background: radial-gradient(circle,
+      rgba(100, 180, 255, 0.05) 0%,
+      transparent 70%);
+  animation: glowPulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.08);
+  }
+}
+
+/* Optional Title Overlay */
+.game-title {
+  position: absolute;
+  top: 12px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  margin-bottom: 200px;
+  color: #64b4ff;
+  text-shadow: 0 2px 6px rgba(100, 180, 255, 0.4);
+}
+#phaser-game-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ensure Phaser canvas behaves like a centered block */
+#phaser-game-container canvas {
+  display: block;
+  margin: 0 auto;
+}
