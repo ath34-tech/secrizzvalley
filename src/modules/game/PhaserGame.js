@@ -1,27 +1,45 @@
-// src/modules/game/PhaserGame.js
+// PhaserGame.js
 import Phaser from "phaser";
 import GameScene from "./GameScene";
 
-export function startGame(parentId, characterData) {
+export function startGame(parentId, characterData, socket) {
+  const parent = document.getElementById(parentId);
+  if (parent) {
+    parent.style.width = "100%";
+    parent.style.height = "100%";
+    parent.style.display = "block";
+  } else {
+    console.warn("Phaser parent not found:", parentId);
+  }
+
   const config = {
     type: Phaser.AUTO,
     parent: parentId,
     backgroundColor: "#000000",
     scale: {
-      mode: Phaser.Scale.FIT,
+      mode: Phaser.Scale.RESIZE,
       autoCenter: Phaser.Scale.CENTER_BOTH,
-      width: "100%",
-      height: "100%",
     },
     physics: {
       default: "arcade",
-      arcade: { debug: false },
+      arcade: { debug: false, gravity: { y: 0 } },
     },
-    scene: [GameScene],
+    audio: false,
+    scene: [
+      class BootScene extends Phaser.Scene {
+        constructor() { super({ key: "BootScene" }); }
+        init() {
+          // attach before GameScene starts
+          this.game.characterData = characterData;
+          this.game.socket = socket;
+        }
+        create() {
+          this.scene.launch("GameScene");
+        }
+      },
+      GameScene
+    ],
   };
 
-  const game = new Phaser.Game(config);
-  // Attach data so the scene can read it in init()
-  game.characterData = characterData;
-  return game;
+  return new Phaser.Game(config);
 }
