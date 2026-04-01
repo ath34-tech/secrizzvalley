@@ -1,7 +1,7 @@
 // GamePage.jsx
 import React, { useEffect, useState } from "react";
 import { startGame } from "./PhaserGame";
-import { supabase } from "../../utils/supabaseClient";
+
 import { io } from "socket.io-client";
 import "./game.css";
 
@@ -15,15 +15,16 @@ export default function GamePage() {
     if (!saved) return;
     const stored = JSON.parse(saved);
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session?.access_token) return;
-      const token = session.access_token;
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      const userId = payload.sub;
+    const savedUser = localStorage.getItem("currentUser");
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+      // Mock token for socket auth
+      const token = "mock-token-" + user.id;
+      const userId = user.id;
       const updated = { ...stored, token, userId };
       localStorage.setItem("characterData", JSON.stringify(updated));
       setCharacterData(updated);
-    });
+    }
   }, []);
 
   useEffect(() => {

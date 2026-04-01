@@ -40,6 +40,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       await signInWithGoogle();
+      navigate("/intro");
     } catch (error) {
       setApiError(error.message || "Google sign-in failed");
       setIsLoading(false);

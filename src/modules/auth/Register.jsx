@@ -70,6 +70,7 @@ export default function Register() {
     setIsLoading(true);
     try {
       await signInWithGoogle();
+      navigate("/intro");
     } catch (error) {
       setApiError(error.message || "Google sign-up failed");
       setIsLoading(false);

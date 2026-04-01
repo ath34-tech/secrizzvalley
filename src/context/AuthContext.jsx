@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../utils/supabaseClient";
 
 const AuthContext = createContext(null);
 
@@ -9,11 +8,15 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const initAuth = async () => {
+    // Initialize auth from localStorage
+    const initAuth = () => {
       try {
-        const { data } = await supabase.auth.getSession();
-        setSession(data.session);
-        setUser(data.session?.user ?? null);
+        const savedUser = localStorage.getItem("currentUser");
+        if (savedUser) {
+          const parsedUser = JSON.parse(savedUser);
+          setUser(parsedUser);
+          setSession({ user: parsedUser });
+        }
       } catch (error) {
         console.error("Auth init error:", error);
       } finally {
@@ -22,51 +25,79 @@ export function AuthProvider({ children }) {
     };
 
     initAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-      setUser(newSession?.user ?? null);
-      setIsLoading(false);
-    });
-
-    return () => subscription?.unsubscribe();
   }, []);
 
   const signUp = async (email, password, username) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
+    // Simulate minor delay for realism
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    
+    if (users.find((u) => u.email === email)) {
+      throw new Error("User already exists with this email.");
+    }
+
+    const newUser = { 
+      id: Date.now().toString(), 
+      email, 
+      username, 
       password,
-      options: {
-        data: { username },
-      },
-    });
-    if (error) throw error;
-    return data;
+      created_at: new Date().toISOString()
+    };
+    
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+    
+    // Auto-login after signup
+    localStorage.setItem("currentUser", JSON.stringify(newUser));
+    setUser(newUser);
+    setSession({ user: newUser });
+    
+    return { user: newUser };
   };
 
   const signIn = async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) throw error;
-    return data;
+    // Simulate minor delay
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const foundUser = users.find((u) => u.email === email && u.password === password);
+
+    if (!foundUser) {
+      throw new Error("Invalid email or password.");
+    }
+
+    localStorage.setItem("currentUser", JSON.stringify(foundUser));
+    setUser(foundUser);
+    setSession({ user: foundUser });
+    
+    return { user: foundUser };
   };
 
   const signInWithGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}`,
-      },
-    });
-    if (error) throw error;
-    return data;
+    // Mock Google Sign-In for frontend experience
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    
+    const mockGoogleUser = {
+      id: "google-" + Date.now(),
+      email: "google.user@example.com",
+      username: "Google Explorer",
+      password: "N/A",
+      is_google: true,
+      created_at: new Date().toISOString()
+    };
+
+    localStorage.setItem("currentUser", JSON.stringify(mockGoogleUser));
+    setUser(mockGoogleUser);
+    setSession({ user: mockGoogleUser });
+    
+    return { user: mockGoogleUser };
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    localStorage.removeItem("currentUser");
+    setUser(null);
+    setSession(null);
   };
 
   return (
