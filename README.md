@@ -1,16 +1,25 @@
-# React + Vite
+# Secrizz Valley Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Demo Videos
 
-Currently, two official plugins are available:
+### Demo 1
+[Watch Demo Video 1](https://drive.google.com/file/d/1PRZ-W3OLaHoyJlOL4xVu4MoSGA5sLWaf/view?usp=drive_link)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Demo 2
+[Watch Demo Video 2](https://drive.google.com/file/d/1pIlDQNjqLOg-WKQElKNQ8oU7zYrSEXL4/view?usp=drive_link)
 
-## React Compiler
+### Demo 3
+[Watch Demo Video 3](https://drive.google.com/file/d/1zt5uOfwgsMF-5f7-A5lSk_tiGvS3wapZ/view?usp=drive_link)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Modern frontend for Secrizz Valley — a platform built to showcase startups, ideas, founders, opportunities, and innovation in a clean and engaging way.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Modern and responsive UI
+- Smooth animations and transitions
+- Startup showcase sections
+- Founder and team highlights
+- Opportunity and collaboration sections
+- Clean navigation with mobile responsiveness
+- Interactive cards and layouts
+- Optimized for fast loading and better user experience
